@@ -1,7 +1,8 @@
 package com.audidiv.library.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,16 +21,18 @@ public class Book {
 
     private String title;
     private String author;
+
+    @Column(columnDefinition = "varchar")
     private String description;
 
     @CreationTimestamp
-    private Timestamp createdAt;
+    private Date createdAt;
 
     public Book(){
 
     }
 
-    public Book(String title, String author, String description, Timestamp createdAt) {
+    public Book(String title, String author, String description, Date createdAt) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -68,12 +71,12 @@ public class Book {
         this.description = description;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(Date date) {
+        this.createdAt = date;
     }
 
 }

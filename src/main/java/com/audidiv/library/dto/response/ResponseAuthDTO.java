@@ -2,7 +2,7 @@ package com.audidiv.library.dto.response;
 
 public class ResponseAuthDTO {
     private String accessToken;
-    private String tokenType;
+    private String tokenType = "Bearer ";
     
     public ResponseAuthDTO(String accessToken) {
         this.accessToken = accessToken;

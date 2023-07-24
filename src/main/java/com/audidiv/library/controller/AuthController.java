@@ -1,6 +1,7 @@
 package com.audidiv.library.controller;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import com.audidiv.library.config.JWTGenerator;
 import com.audidiv.library.dto.request.RequestLoginDto;
 import com.audidiv.library.dto.request.RequestRegisterDto;
 import com.audidiv.library.dto.response.ResponseAuthDTO;
+import com.audidiv.library.model.Book;
 import com.audidiv.library.model.Role;
 import com.audidiv.library.model.UserEntity;
 import com.audidiv.library.repository.RoleRepository;
@@ -44,9 +47,6 @@ public class AuthController {
 
     @PostMapping("user/register")
     public ResponseEntity<String> register(@RequestBody RequestRegisterDto request){
-        System.out.println(request.getUsername());
-        System.out.println(request.getEmail());
-        System.out.println(request.getPhoneNumber());
         if(userRepository.existsByUsername(request.getUsername())){
             return new ResponseEntity<String>("Username has already registered", HttpStatus.BAD_REQUEST);
         }
@@ -96,7 +96,10 @@ public class AuthController {
     @PostMapping("user/login")
     public ResponseEntity<ResponseAuthDTO> login(@RequestBody RequestLoginDto request){
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            new UsernamePasswordAuthenticationToken(
+                request.getUsername(),
+                request.getPassword()
+            )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);

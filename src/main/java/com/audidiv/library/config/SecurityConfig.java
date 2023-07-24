@@ -34,19 +34,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            // .exceptionHandling()
-            // .authenticationEntryPoint(authEntryPoint)
-            // .and()
-            // .sessionManagement()
-            // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            // .and()
+            .csrf(csrf -> csrf.disable())
+            .exceptionHandling()
+            .authenticationEntryPoint(authEntryPoint)
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .httpBasic();
-        // http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -66,14 +66,15 @@ public class SecurityConfig {
 //        return new InMemoryUserDetailsManager(admin, user);
 //    }
 
+
     @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration aithAuthenticationConfiguration) throws Exception {
-        return aithAuthenticationConfiguration.getAuthenticationManager();
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
