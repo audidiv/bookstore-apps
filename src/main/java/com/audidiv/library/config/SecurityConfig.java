@@ -35,36 +35,36 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(authEntryPoint)
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+            // .exceptionHandling()
+            // .authenticationEntryPoint(authEntryPoint)
+            // .and()
+            // .sessionManagement()
+            // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            // .and()
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .httpBasic();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService user(){
-        UserDetails admin = User.builder()
-            .username("admin")
-            .password("password")
-            .roles("ADMIN")
-            .build();
-        UserDetails user = User.builder()
-            .username("user")
-            .password("password")
-            .roles("USER")
-            .build();
+//    @Bean
+//    public UserDetailsService user(){
+//        UserDetails admin = User.builder()
+//            .username("admin")
+//            .password("password")
+//            .roles("ADMIN")
+//            .build();
+//        UserDetails user = User.builder()
+//            .username("user")
+//            .password("password")
+//            .roles("USER")
+//            .build();
 
-        return new InMemoryUserDetailsManager(admin, user);
-    }
+//        return new InMemoryUserDetailsManager(admin, user);
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder(){
